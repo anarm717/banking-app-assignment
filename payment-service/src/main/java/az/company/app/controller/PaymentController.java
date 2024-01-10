@@ -28,7 +28,7 @@ public class PaymentController {
     @LogExecutionTime
     @Operation(summary = "top-up balance", description = "there you top-up balance by customerId", tags = {"Payment"})
     @PostMapping("/top-up/{gsmNumber}")
-    @PreAuthorize("@customAuthorization.isValid('TopUpBalance')")
+    // @PreAuthorize("@customAuthorization.isValid('TopUpBalance')")
     ResponseEntity<?> topUp(@PathVariable("gsmNumber") Long gsmNumber, @RequestBody TopUpAmountDto topUpAmount){
         return service.topUp(gsmNumber, topUpAmount);
     }

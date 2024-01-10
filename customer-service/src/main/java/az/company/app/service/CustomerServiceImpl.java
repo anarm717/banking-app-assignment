@@ -7,6 +7,7 @@ import az.company.app.errors.ErrorsFinal;
 import az.company.app.errors.SuccessMessage;
 import az.company.app.exception.ApplicationException;
 import az.company.app.mapper.CustomerMapper;
+import az.company.app.model.AmountBaseDto;
 import az.company.app.model.CustomerBaseDto;
 import az.company.app.repository.CustomerNumberRepository;
 import az.company.app.repository.CustomerRepository;
@@ -27,6 +28,8 @@ import java.util.*;
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomAuthorization customAuthorization;
+
+    private final PaymentApiService paymentApiService;
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -51,6 +54,26 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = customerRepository.findById(id).orElseThrow(() ->
                 new ApplicationException(ErrorsFinal.DATA_NOT_FOUND, Map.ofEntries(Map.entry("id", id), Map.entry("name", "Customer"))));
         CustomerBaseDto dto = customerMapper.entityToDto(customer);
+        return MessageResponse.response(SuccessMessage.SUCCESS_GET, dto, null, HttpStatus.OK);
+    }
+
+    /**
+     * Retrieves a customer with the specified gsmNumber from the repository and converts it to a CustomerBaseDto object.
+     * Throws an ApplicationException if a customer with the specified gsmNumber is not found.
+     * @param gsmNumber the gsmNumber of the customer to retrieve.
+     * @return a ResponseEntity object containing the customerBaseDto object, a null error message, and an OK status code.
+     */
+    @Override
+    public ResponseEntity<?> getByGsmNumber(Long gsmNumber) {
+        List<CustomerNumber> customerNumbers = customerNumberRepository.getByNumber(gsmNumber);
+        if (customerNumbers.isEmpty()){
+            throw new ApplicationException(ErrorsFinal.DATA_NOT_FOUND,
+            Map.ofEntries(Map.entry("id", gsmNumber)));
+        }
+        CustomerNumber customerNumber = customerNumbers.get(0);
+        CustomerBaseDto dto = customerMapper.entityToDto(customerNumber.getCustomer());
+        dto.setBalance(customerNumber.getBalance());
+        dto.setGsmNumber(customerNumber.getGsmNumber());
         return MessageResponse.response(SuccessMessage.SUCCESS_GET, dto, null, HttpStatus.OK);
     }
 
@@ -86,15 +109,54 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setCreatedBy(createdBy);
         customerRepository.save(customer);
         CustomerNumber customerNumber= new CustomerNumber();
-        customerNumber.setBalance(customerBaseDto.getBalance());
+        customerNumber.setBalance(BigDecimal.ZERO);
         customerNumber.setGsmNumber(customerBaseDto.getGsmNumber());
         customerNumber.setCustomer(customer);
         customerNumber.setCreatedBy(createdBy);
         customerNumberRepository.save(customerNumber);
         CustomerBaseDto posDto = customerMapper.entityToDto(customer);
-        posDto.setBalance(customerNumber.getBalance());
+        posDto.setBalance(customerBaseDto.getBalance());
         posDto.setGsmNumber(customerNumber.getGsmNumber());
+        paymentApiService.topUpBalance(customerNumber.getGsmNumber(), customerBaseDto.getBalance());
         return MessageResponse.response(SuccessMessage.SUCCESS_ADD, posDto, null, HttpStatus.OK);
+    }
+
+    /**
+     * Adds balance gsm number.
+     * @param amountBaseDto A AmountBasDto object that contains the details of the amount.
+     * @return A ResponseEntity object containing the success message and the updated details.
+     */
+    @Override
+    public ResponseEntity<?> addBalance(AmountBaseDto amountBaseDto, Long gsmNumber) {
+        List<CustomerNumber> customerNumbers = customerNumberRepository.getByNumber(gsmNumber);
+        if (customerNumbers.isEmpty()){
+            throw new ApplicationException(ErrorsFinal.DATA_NOT_FOUND,
+            Map.ofEntries(Map.entry("id", gsmNumber)));
+        }
+        CustomerNumber customerNumber = customerNumbers.get(0);
+        customerNumber.setBalance(customerNumber.getBalance().add(amountBaseDto.getAmount()));
+        CustomerBaseDto dto = customerMapper.entityToDto(customerNumber.getCustomer());
+        customerNumberRepository.save(customerNumber);
+        return MessageResponse.response(SuccessMessage.SUCCESS_ADD, dto, null, HttpStatus.OK);
+    }
+
+    /**
+     * Subtracts balance gsm number.
+     * @param amountBaseDto A AmountBasDto object that contains the details of the amount.
+     * @return A ResponseEntity object containing the success message and the updated details.
+     */
+    @Override
+    public ResponseEntity<?> subtractBalance(AmountBaseDto amountBaseDto, Long gsmNumber) {
+        List<CustomerNumber> customerNumbers = customerNumberRepository.getByNumber(gsmNumber);
+        if (customerNumbers.isEmpty()){
+            throw new ApplicationException(ErrorsFinal.DATA_NOT_FOUND,
+            Map.ofEntries(Map.entry("id", gsmNumber)));
+        }
+        CustomerNumber customerNumber = customerNumbers.get(0);
+        customerNumber.setBalance(customerNumber.getBalance().subtract(amountBaseDto.getAmount()));
+        CustomerBaseDto dto = customerMapper.entityToDto(customerNumber.getCustomer());
+        customerNumberRepository.save(customerNumber);
+        return MessageResponse.response(SuccessMessage.SUCCESS_ADD, dto, null, HttpStatus.OK);
     }
 
     /**

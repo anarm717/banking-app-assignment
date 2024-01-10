@@ -18,7 +18,7 @@ public interface CustomerNumberRepository extends JpaRepository<CustomerNumber, 
     @Query("select  p from CustomerNumber p where p.status = :character")
     List<CustomerNumber> findAllByStatus(Character character);
 
-    @Query("select  p from CustomerNumber p where p.gsmNumber = :gsmNumber")
+    @Query("select  p from CustomerNumber p left join fetch Customer where p.gsmNumber = :gsmNumber")
     List<CustomerNumber> getByNumber(Long gsmNumber);
 
     Optional<CustomerNumber> getByIdAndStatus(Long id, Character status);

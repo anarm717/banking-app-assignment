@@ -2,6 +2,7 @@ package az.company.app.controller;
 
 import az.company.app.errors.SuccessMessage;
 import az.company.app.logging.annotation.LogExecutionTime;
+import az.company.app.model.AmountBaseDto;
 import az.company.app.model.CustomerBaseDto;
 import az.company.app.response.MessageResponse;
 import az.company.app.service.CustomerService;
@@ -54,11 +55,35 @@ public class CustomerController {
     }
 
     @LogExecutionTime
+    @Operation(summary = "get customer by GsmNumber", description = "there you can get customer by Gsm Number", tags = {"Customer"})
+    @GetMapping("/gsm-number/{gsmNumber}")
+    @PreAuthorize("@customAuthorization.isValid('CustomerView')")
+    public ResponseEntity<?> getByGsmNumber(@NotNull @PathVariable("gsmNumber") Long gsmNumber){
+        return service.getByGsmNumber(gsmNumber);
+    }
+
+    @LogExecutionTime
     @Operation(summary = "update customer", description = "there you can update customer", tags = {"Customer"})
     @PutMapping("/{id}")
     @PreAuthorize("@customAuthorization.isValid('CustomerEdit')")
     ResponseEntity<?> updateCustomer (@RequestBody CustomerBaseDto customerBaseDto, @PathVariable Long id){
         return service.updateCustomer(customerBaseDto, id);
+    }
+
+    @LogExecutionTime
+    @Operation(summary = "add amount to balance", description = "there you can add amount to balance", tags = {"Customer"})
+    @PostMapping("/add-balance/{gsmNumber}")
+    @PreAuthorize("@customAuthorization.isValid('CustomerEdit')")
+    ResponseEntity<?> addBalance (@RequestBody AmountBaseDto amountBaseDto, @PathVariable Long gsmNumber){
+        return service.addBalance(amountBaseDto, gsmNumber);
+    }
+
+    @LogExecutionTime
+    @Operation(summary = "subtract amount from balance", description = "there you can subtract amount from balance", tags = {"Customer"})
+    @PostMapping("/subtract-balance/{gsmNumber}")
+    @PreAuthorize("@customAuthorization.isValid('CustomerEdit')")
+    ResponseEntity<?> subtractBalance (@RequestBody AmountBaseDto amountBaseDto, @PathVariable Long gsmNumber){
+        return service.subtractBalance(amountBaseDto, gsmNumber);
     }
 
     @LogExecutionTime

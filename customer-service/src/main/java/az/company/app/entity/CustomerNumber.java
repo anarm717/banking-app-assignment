@@ -20,7 +20,7 @@ import jakarta.persistence.*;
 @SQLDelete(sql = "update customer.customer_numbers set status='0', end_date=current_timestamp where id =?")
 public class CustomerNumber extends BaseEntity<Long> {
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id")
     private Customer customer;
 

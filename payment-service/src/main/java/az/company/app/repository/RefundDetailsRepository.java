@@ -18,7 +18,7 @@ public interface RefundDetailsRepository extends JpaRepository<RefundDetails, Lo
     @Query("select  p from RefundDetails p where p.status = :character")
     List<RefundDetails> findAllByStatus(Character character);
 
-    @Query("select  p from RefundDetails p where p.transactionId = :transactionId")
+    @Query("select  p from RefundDetails p where p.transaction.id = :transactionId")
     List<RefundDetails> getByTransactionId(Long transactionId);
 
     Optional<RefundDetails> getByIdAndStatus(Long id, Character status);

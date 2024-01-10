@@ -7,6 +7,7 @@ import az.company.app.entity.TransactionType;
 import az.company.app.errors.ErrorsFinal;
 import az.company.app.errors.SuccessMessage;
 import az.company.app.exception.ApplicationException;
+import az.company.app.model.CustomerBaseDto;
 import az.company.app.model.PurchaseAmountDto;
 import az.company.app.model.RefundAmountDto;
 import az.company.app.model.TopUpAmountDto;
@@ -33,6 +34,8 @@ public class PaymentServiceImpl implements PaymentService {
 
     private final CustomAuthorization customAuthorization;
 
+    private final CustomerApiService customerApiService;
+
     @Autowired
     private TransactionRepository transactionRepository;
 
@@ -49,7 +52,11 @@ public class PaymentServiceImpl implements PaymentService {
      */
     @Override
     public ResponseEntity<?> topUp(Long gsmNumber, TopUpAmountDto topUpAmountDto) {
-        //to-do check gsmNumber exists
+        CustomerBaseDto customer = customerApiService.getCustomerByGsmNumber(gsmNumber);
+        if (customer == null) {
+            throw new ApplicationException(ErrorsFinal.DATA_NOT_FOUND,
+            Map.ofEntries(Map.entry("id",gsmNumber)));
+        }
         Transaction transaction = new Transaction();
         transaction.setGsmNumber(gsmNumber);
         transaction.setAmount(topUpAmountDto.getTopUpAmount());
@@ -60,7 +67,7 @@ public class PaymentServiceImpl implements PaymentService {
         String transactionUUID = UUID.randomUUID().toString();
         transaction.setTransactionUUId(transactionUUID);
         transactionRepository.save(transaction);
-        //to-do check update gsmNumber balance with customer API
+        customerApiService.addBalanceByGsmNumber(gsmNumber, topUpAmountDto.getTopUpAmount());
         return MessageResponse.response(SuccessMessage.SUCCESS_ADD, null, null, HttpStatus.OK);
     }
 
@@ -82,7 +89,7 @@ public class PaymentServiceImpl implements PaymentService {
         String transactionUUID = UUID.randomUUID().toString();
         transaction.setTransactionUUId(transactionUUID);
         transactionRepository.save(transaction);
-        //to-do check update gsmNumber balance with customer API
+        customerApiService.subtractBalanceByGsmNumber(gsmNumber, purchaseAmountDto.getPurchaseAmount());
         return MessageResponse.response(SuccessMessage.SUCCESS_ADD, null, null, HttpStatus.OK);
     }
 
@@ -117,7 +124,7 @@ public class PaymentServiceImpl implements PaymentService {
         refundDetails.setCreatedBy(createdBy);
         refundDetails.setPurchaseTransaction(purchaseTransaction);
         refundDetailsRepository.save(refundDetails);
-        //to-do check update gsmNumber balance with customer API
+        customerApiService.addBalanceByGsmNumber(purchaseTransaction.getGsmNumber(), refundAmountDto.getRefundAmount());
         return MessageResponse.response(SuccessMessage.SUCCESS_ADD, null, null, HttpStatus.OK);
     }
 
