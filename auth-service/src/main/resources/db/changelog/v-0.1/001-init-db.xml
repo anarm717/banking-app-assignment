@@ -1,0 +1,212 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="adil" id="1">
+        <createTable tableName="permissions">
+            <column autoIncrement="true" name="id" startWith="15" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="permissions_pkey"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="created_by" type="BIGINT"/>
+            <column name="perm_desc" type="VARCHAR(255)"/>
+            <column name="perm_name" type="VARCHAR(100)"/>
+            <column name="app_id" type="BIGINT"/>
+            <column name="parent_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="adil" id="2">
+        <createTable tableName="role_permission">
+            <column autoIncrement="true" name="id" startWith="96" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="role_permission_pkey"/>
+            </column>
+            <column name="access" type="BOOLEAN"/>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="BIGINT"/>
+            <column name="permission_id" type="BIGINT"/>
+            <column name="role_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="adil" id="3">
+        <createTable tableName="roles">
+            <column autoIncrement="true" name="id" startWith="35" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="roles_pkey"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="created_by" type="BIGINT"/>
+            <column name="role_desc" type="VARCHAR(255)"/>
+            <column name="role_name" type="VARCHAR(100)"/>
+            <column name="status" type="CHAR(1)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="adil" id="4">
+        <createTable tableName="user_permission">
+            <column autoIncrement="true" name="id" startWith="42" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_permission_pkey"/>
+            </column>
+            <column name="access" type="BOOLEAN"/>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="BIGINT"/>
+            <column name="status" type="CHAR(1)"/>
+            <column name="permission_id" type="BIGINT"/>
+            <column name="user_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="adil" id="5">
+        <createTable tableName="user_role">
+            <column autoIncrement="true" name="id" startWith="29" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_role_pkey"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="created_by" type="BIGINT"/>
+            <column name="status" type="CHAR(1)"/>
+            <column name="role_id" type="BIGINT"/>
+            <column name="user_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="adil" id="6">
+        <createTable tableName="users">
+            <column autoIncrement="true" name="id" startWith="36" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="users_pkey"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="created_by" type="BIGINT"/>
+            <column name="father_name" type="VARCHAR(100)"/>
+            <column name="first_name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(512)"/>
+            <column name="status" type="CHAR(1)"/>
+            <column name="last_name" type="VARCHAR(150)"/>
+            <column name="username" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="mobile" type="VARCHAR(255)"/>
+            <column name="note" type="VARCHAR(255)"/>
+            <column name="mobile_phone" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="adil" id="7">
+        <createTable tableName="method">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="method_pkey"/>
+            </column>
+            <column name="method_name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="adil" id="8">
+        <createTable tableName="app">
+            <column autoIncrement="true" name="id" startWith="5" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="app_pkey"/>
+            </column>
+            <column name="app_desc" type="VARCHAR(255)"/>
+            <column name="app_name" type="VARCHAR(100)"/>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="created_by" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="adil" id="9">
+        <addUniqueConstraint columnNames="username" constraintName="uk_r43af9ap4edm43mmtq01oddj6" tableName="users"/>
+    </changeSet>
+    <changeSet author="adil" id="10">
+        <createTable tableName="method_role">
+            <column name="method_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="method_role_pkey"/>
+            </column>
+            <column name="role_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="method_role_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="adil" id="11">
+        <addForeignKeyConstraint baseColumnNames="permission_id" baseTableName="user_permission" constraintName="fk1r9shydjvgeefuwsrhrcqtkxd" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="permissions" validate="true"/>
+    </changeSet>
+    <changeSet author="adil" id="12">
+        <addForeignKeyConstraint baseColumnNames="permission_id" baseTableName="role_permission" constraintName="fk2xn8qv4vw30i04xdxrpvn3bdi" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="permissions" validate="true"/>
+    </changeSet>
+    <changeSet author="adil" id="13">
+        <addForeignKeyConstraint baseColumnNames="parent_id" baseTableName="permissions" constraintName="fk7dnfmocchk1nhmnb1ujcf5dsk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="permissions" validate="true"/>
+    </changeSet>
+    <changeSet author="adil" id="14">
+        <addForeignKeyConstraint baseColumnNames="app_id" baseTableName="permissions" constraintName="fki42rrejbybvuyeua6uopbgnjl" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="app" validate="true"/>
+    </changeSet>
+    <changeSet author="adil" id="15">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_role" constraintName="fkj345gk1bovqvfame88rcx7yyx" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="adil" id="16">
+        <addForeignKeyConstraint baseColumnNames="method_id" baseTableName="method_role" constraintName="fkjvgibv9505b6kf0j78132dper" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="method" validate="true"/>
+    </changeSet>
+    <changeSet author="adil" id="17">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_permission" constraintName="fkn8ba4v3gvw1d82t3hofelr82t" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="adil" id="18">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="method_role" constraintName="fknokr1pvlw8ay4m6hxrdecx40f" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="roles" validate="true"/>
+    </changeSet>
+    <changeSet author="adil" id="19">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="user_role" constraintName="fkt7e7djp752sqn6w22i6ocqy6q" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="roles" validate="true"/>
+    </changeSet>
+    <changeSet author="adil" id="20">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="role_permission" constraintName="fktfgq8q9blrp0pt1pvggyli3v9" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="roles" validate="true"/>
+    </changeSet>
+
+
+    <changeSet  author="adil" id="21">
+        <createTable tableName="object_type">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="type_name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="desc" type="VARCHAR(300)"/>
+            <column name="visibility" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet  author="adil" id="22">
+        <createTable tableName="object">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="parent_id" type="BIGINT"/>
+            <column name="permission_id" type="BIGINT"/>
+            <column name="object_type_id" type="BIGINT"/>
+            <column name="object_id_name" type="VARCHAR(100)"/>
+            <column name="caption" type="VARCHAR(200)"/>
+            <column name="property" type="jsonb"/>
+            <column name="desc" type="VARCHAR(300)"/>
+            <column name="required" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet  author="adil" id="23">
+        <addForeignKeyConstraint baseTableName="object"
+                                 baseColumnNames="object_type_id"
+                                 constraintName="object_object_type_id_fk"
+                                 referencedTableName="object_type"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet  author="adil" id="24">
+        <addForeignKeyConstraint baseTableName="object"
+                                 baseColumnNames="permission_id"
+                                 constraintName="object_permission_id_fk"
+                                 referencedTableName="permissions"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet author="adil" id="25">
+        <addColumn tableName="role_permission">
+            <column name="status" type="VARCHAR(1)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+
+</databaseChangeLog>

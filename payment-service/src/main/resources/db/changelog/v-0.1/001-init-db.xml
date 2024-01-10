@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+    <changeSet author="APP" id="1681798938020-1">
+         <createTable tableName="transaction_types">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="transaction_types_pkey"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="BIGINT"/>
+            <column name="end_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="status" type="CHAR(1)"/>
+            <column name="name" type="VARCHAR(350)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="APP" id="1681798938020-2">
+         <createTable tableName="transactions">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="transactions_pkey"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="BIGINT"/>
+            <column name="end_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="status" type="CHAR(1)"/>
+            <column name="transaction_uuid" type="VARCHAR(350)"/>
+            <column name="gsm_number" type="BIGINT"/>
+            <column name="amount" type="numeric"/>
+            <column name="type_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="APP" id="1681798938020-4">
+         <createTable tableName="refund_details">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="refund_details_pkey"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="BIGINT"/>
+            <column name="end_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="status" type="CHAR(1)"/>
+            <column name="transaction_id" type="BIGINT"/>
+            <column name="purchase_transaction_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="APP" id="1681798938020-5">
+        <addUniqueConstraint
+                columnNames="name"
+                constraintName="fk2b0qdg37xpufeg3ba8ptvbky1"
+                tableName="transaction_types"
+                />
+        <addUniqueConstraint
+                columnNames="transaction_uuid"
+                constraintName="fk2b0qdg37xpufeg3ba8ptvbky2"
+                tableName="transactions"
+                />
+        <addForeignKeyConstraint baseColumnNames="type_id" baseTableName="transactions" 
+            constraintName="fk2b0qdg37xpufeg3ba8ptvbkyr1" deferrable="false" initiallyDeferred="false"
+            onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" 
+            referencedTableName="transaction_types" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="transaction_id" baseTableName="refund_details" 
+            constraintName="fk2b0qdg37xpufeg3ba8ptvbkyr2" deferrable="false" initiallyDeferred="false"
+            onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" 
+            referencedTableName="transactions" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="purchase_transaction_id" baseTableName="refund_details" 
+            constraintName="fk2b0qdg37xpufeg3ba8ptvbkyr3" deferrable="false" initiallyDeferred="false"
+            onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" 
+            referencedTableName="transactions" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

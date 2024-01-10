@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+    <changeSet author="APP" id="1681798938021-1">
+         <createTable tableName="customers">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="customers_unit_pkey"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="BIGINT"/>
+            <column name="end_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="status" type="CHAR(1)"/>
+            <column name="name" type="VARCHAR(350)"/>
+            <column name="surname" type="VARCHAR(350)"/>
+            <column name="birth_date" type="DATE"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="APP" id="1681798938021-2">
+         <createTable tableName="customer_numbers">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="customer_numbers_unit_pkey"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="BIGINT"/>
+            <column name="end_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="status" type="CHAR(1)"/>
+            <column name="customer_id" type="BIGINT"/>
+            <column name="gsm_number" type="BIGINT"/>
+            <column name="balance" type="numeric"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="APP" id="1681798938021-3">
+        <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="customer_numbers" constraintName="fk2b0qdg37xpufeg3ba8ptvbkyr" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="customers" validate="true"/>
+    </changeSet>
+    <changeSet author="APP" id="a1681798938021-4">
+        <addUniqueConstraint
+                columnNames="name, surname, birth_date"
+                constraintName="fk2b0qdg37xpufeg3ba8ptvbky1"
+                tableName="customers"
+                />
+        <addUniqueConstraint
+                columnNames="gsm_number"
+                constraintName="fk2b0qdg37xpufeg3ba8ptvbky2"
+                tableName="customer_numbers"
+                />
+    </changeSet>
+</databaseChangeLog>
