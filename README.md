@@ -1,5 +1,4 @@
-# banking-app-assignment
-Banking Application Assignment for Backend Developer Interview
+# Banking Application Assignment for Backend Developer Interview
 
 This is a simple banking backend application written in Java, designed to provide basic functionalities for managing customer accounts. The application supports customer creation, balance management, and transaction processing through either a Rest API or a basic GUI. The application is built with microservice architecture principles and stores data securely in a relational database (PostgreSQL).
 
