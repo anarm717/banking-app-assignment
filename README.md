@@ -21,3 +21,14 @@ Demonstration Steps:
 
 Architecture
 ![Alt text](banking_app_architecture.jpg)
+
+Technology Stack:
+• Java language.
+• Spring Boot framework.
+• Spring Data JPA.
+• Swagger for API documentation.
+• JWT for authentication services.
+• Microservice architecture.
+• PostgreSQL for database
+• Docker
+• To create API documentation in JavaDoc you can run this command for each service : mvn javadoc:javadoc
