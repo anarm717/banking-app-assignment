@@ -21,6 +21,8 @@ public enum ErrorsFinal implements ErrorResponse {
     
     GSM_NUMBER_EXISTS( "GSM_NUMBER_EXISTS", HttpStatus.BAD_REQUEST, "GSM Number exist: '{gsmNumber}'"),
     WRONG_INITIAL_BALANCE( "WRONG_INITIAL_BALANCE", HttpStatus.BAD_REQUEST, "The initial customer balance should start with 100 azn."),
+    GSM_NUMBER_NOT_FOUND( "GSM_NUMBER_NOT_FOUND", HttpStatus.NOT_FOUND, "GSM Number not found : '{gsmNumber}'"),
+    CUSTOMER_SERVICE_ERROR( "CUSTOMER_SERVICE_ERROR", HttpStatus.CONFLICT, "Customer Service Error"),
 
     //pdf generation exception messages
     GENERATE_PDF_EXCEPTION( "GENERATE_PDF_EXCEPTION", HttpStatus.INTERNAL_SERVER_ERROR, "{message}"),

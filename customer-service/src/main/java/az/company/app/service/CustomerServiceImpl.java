@@ -7,6 +7,7 @@ import az.company.app.errors.ErrorsFinal;
 import az.company.app.errors.SuccessMessage;
 import az.company.app.exception.ApplicationException;
 import az.company.app.mapper.CustomerMapper;
+import az.company.app.mapper.CustomerNumberMapper;
 import az.company.app.model.AmountBaseDto;
 import az.company.app.model.CustomerBaseDto;
 import az.company.app.repository.CustomerNumberRepository;
@@ -15,9 +16,13 @@ import az.company.app.response.MessageResponse;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+
+import org.springframework.data.domain.Pageable;
 import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
@@ -39,6 +44,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
     private CustomerMapper customerMapper;
+
+    @Autowired
+    private CustomerNumberMapper customerNumberMapper;
 
     @PersistenceContext
     EntityManager entityManager;
@@ -82,10 +90,15 @@ public class CustomerServiceImpl implements CustomerService {
      * @return a ResponseEntity object containing a list of CustomerBaseDto objects, a null error message, and an OK status code.
      */
     @Override
-    public ResponseEntity<?> getActives() {
-        List<Customer> find = customerRepository.findAllByStatus('1');
-        List<CustomerBaseDto> dto = customerMapper.entityToDtos(find);
-        return MessageResponse.response(SuccessMessage.SUCCESS_GET, dto, null, HttpStatus.OK);
+    public ResponseEntity<?> getActives(int page, int size) {
+        Pageable paging = PageRequest.of(page, size);
+        List<CustomerNumber> find = customerNumberRepository.findAllByStatus('1',paging);
+        List<CustomerBaseDto> dtos = customerNumberMapper.entityToDtos(find);
+        List<Integer> recordCount = customerNumberRepository.getAllCountByStatus('1');
+        Map<String, Object> data = new HashMap<>();
+        data.put("customers",dtos);
+        data.put("recordCount",recordCount.get(0));
+        return MessageResponse.response(SuccessMessage.SUCCESS_GET, data, null, HttpStatus.OK);
     }
 
     /**
@@ -117,7 +130,17 @@ public class CustomerServiceImpl implements CustomerService {
         CustomerBaseDto posDto = customerMapper.entityToDto(customer);
         posDto.setBalance(customerBaseDto.getBalance());
         posDto.setGsmNumber(customerNumber.getGsmNumber());
-        paymentApiService.topUpBalance(customerNumber.getGsmNumber(), customerBaseDto.getBalance());
+        try{
+            paymentApiService.topUpBalance(customerNumber.getGsmNumber(), customerBaseDto.getBalance());
+        }
+        catch (HttpClientErrorException.NotFound e){
+            throw new ApplicationException(ErrorsFinal.DATA_NOT_FOUND);
+        }
+        catch (Exception e) {
+            customerRepository.delete(customer);
+            customerNumberRepository.delete(customerNumber);
+            throw new ApplicationException(ErrorsFinal.CUSTOMER_SERVICE_ERROR);
+        }
         return MessageResponse.response(SuccessMessage.SUCCESS_ADD, posDto, null, HttpStatus.OK);
     }
 

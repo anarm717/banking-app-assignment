@@ -33,8 +33,9 @@ public class CustomerController {
     @Operation(summary = "get all customer", description = "there you can get all customer", tags = {"Customer"})
     @GetMapping
     @PreAuthorize("@customAuthorization.isValid('CustomerGetAll')")
-    ResponseEntity<?> getAll(){
-        return service.getActives();
+    ResponseEntity<?> getAll(@RequestParam(defaultValue = "0") int page,
+                             @RequestParam(defaultValue = "10") int size){
+        return service.getActives(page,size);
     }
 
     @LogExecutionTime

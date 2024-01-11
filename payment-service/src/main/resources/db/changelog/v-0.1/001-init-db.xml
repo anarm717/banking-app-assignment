@@ -3,7 +3,7 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
-    <changeSet author="APP" id="1681798938020-1">
+    <changeSet author="APP" id="1681798938020-11">
          <createTable tableName="transaction_types">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="transaction_types_pkey"/>
@@ -17,7 +17,7 @@
             <column name="name" type="VARCHAR(350)"/>
         </createTable>
     </changeSet>
-    <changeSet author="APP" id="1681798938020-2">
+    <changeSet author="APP" id="1681798938020-22">
          <createTable tableName="transactions">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="transactions_pkey"/>
@@ -34,7 +34,7 @@
             <column name="type_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="APP" id="1681798938020-4">
+    <changeSet author="APP" id="1681798938020-43">
          <createTable tableName="refund_details">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="refund_details_pkey"/>
@@ -49,7 +49,7 @@
             <column name="purchase_transaction_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="APP" id="1681798938020-5">
+    <changeSet author="APP" id="1681798938020-54">
         <addUniqueConstraint
                 columnNames="name"
                 constraintName="fk2b0qdg37xpufeg3ba8ptvbky1"

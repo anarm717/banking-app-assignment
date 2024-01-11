@@ -20,10 +20,13 @@ public enum ErrorsFinal implements ErrorResponse {
 
     //pdf generation exception messages
     GENERATE_PDF_EXCEPTION( "GENERATE_PDF_EXCEPTION", HttpStatus.INTERNAL_SERVER_ERROR, "{message}"),
-
+    
     TRANSACTION_NOT_FOUND( "TRANSACTION_NOT_FOUND", HttpStatus.NOT_FOUND, "transaction not found : {transactionId}"),
     MULTIPLE_TRANSACTION_FOUND( "MULTIPLE_TRANSACTION_FOUND", HttpStatus.NOT_FOUND, "multiple transactions not found : {transactionId}"),
+    WRONG_REFUND_AMOUNT( "WRONG_REFUND_AMOUNT", HttpStatus.BAD_REQUEST, "Refund amount higher than purchase amount"),
     
+    GSM_NUMBER_NOT_FOUND( "GSM_NUMBER_NOT_FOUND", HttpStatus.NOT_FOUND, "GSM Number not found : '{gsmNumber}'"),
+    CUSTOMER_SERVICE_ERROR( "CUSTOMER_SERVICE_ERROR", HttpStatus.CONFLICT, "Customer Service Error"),
 
     //get staff unit attributes
     STAFF_UNIT_GET_ATTRIBUTES("STAFF_UNIT_GET_ATTRIBUTES", HttpStatus.INTERNAL_SERVER_ERROR, "{message}"),

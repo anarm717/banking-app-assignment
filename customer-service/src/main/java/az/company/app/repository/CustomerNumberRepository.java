@@ -2,6 +2,7 @@ package az.company.app.repository;
 
 import az.company.app.entity.CustomerNumber;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -16,7 +17,10 @@ public interface CustomerNumberRepository extends JpaRepository<CustomerNumber, 
     List<CustomerNumber> findAll();
 
     @Query("select  p from CustomerNumber p where p.status = :character")
-    List<CustomerNumber> findAllByStatus(Character character);
+    List<CustomerNumber> findAllByStatus(Character character, Pageable pageable);
+
+    @Query("select  count(p) from CustomerNumber p where p.status = :character")
+    List<Integer> getAllCountByStatus(Character character);
 
     @Query("select  p from CustomerNumber p left join fetch Customer where p.gsmNumber = :gsmNumber")
     List<CustomerNumber> getByNumber(Long gsmNumber);

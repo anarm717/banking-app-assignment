@@ -26,7 +26,7 @@ public interface CustomerService {
      Retrieve all active Customer entities.
      @return A ResponseEntity containing a list of all active Customer entities, or an error response if the request fails.
      */
-    ResponseEntity<?> getActives();
+    ResponseEntity<?> getActives(int page, int size);
 
     /**
      Adds a new customer  to the system based on the provided data.

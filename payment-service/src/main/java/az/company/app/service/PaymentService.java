@@ -10,6 +10,20 @@ import az.company.app.model.TopUpAmountDto;
 public interface PaymentService {
 
     /**
+     Retrieve a Transaction entity by ID.
+     @param transactionUUID The ID of the entity to retrieve.
+     @return A ResponseEntity containing the requested Transaction entity, or an error response if the entity is not found.
+     */
+    ResponseEntity<?> getByUUId(String transactionUUID);
+
+    /**
+     Retrieve a Transaction entity by ID.
+     @param gsmNumber The gsmNumber of the entity to retrieve.
+     @return A ResponseEntity containing the requested Transaction entity, or an error response if the entity is not found.
+     */
+    ResponseEntity<?> getByGsmNumber(Long gsmNumber,int page, int size);
+
+    /**
      Top up balance by gsmNumber.
      @param dto the data transfer object containing the necessary parameters for topUp balance .
      @return true if the operation is successfully finished, false otherwise.

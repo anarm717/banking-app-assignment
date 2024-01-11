@@ -7,6 +7,7 @@ import az.company.app.model.TopUpAmountDto;
 import az.company.app.service.PaymentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +27,25 @@ public class PaymentController {
     private PaymentService service;
 
     @LogExecutionTime
+    @Operation(summary = "get transaction by id", description = "there you can get transactions by ID", tags = {"Payment"})
+    @GetMapping("/transaction/{transactionId}")
+    public ResponseEntity<?> getByUUId(@NotNull @PathVariable("transactionId") String transactionId){
+        return service.getByUUId(transactionId);
+    }
+
+    @LogExecutionTime
+    @Operation(summary = "get transactions by gsmNumber", description = "there you can get transactions by gsmNumber", tags = {"Payment"})
+    @GetMapping("/transactions/{gsmNumber}")
+    public ResponseEntity<?> getByGsmNumber(@NotNull @PathVariable("gsmNumber") Long gsmNumber,
+                                            @RequestParam(defaultValue = "0") int page,
+                                            @RequestParam(defaultValue = "10") int size){
+        return service.getByGsmNumber(gsmNumber,page,size);
+    }
+
+    @LogExecutionTime
     @Operation(summary = "top-up balance", description = "there you top-up balance by customerId", tags = {"Payment"})
     @PostMapping("/top-up/{gsmNumber}")
-    // @PreAuthorize("@customAuthorization.isValid('TopUpBalance')")
+    @PreAuthorize("@customAuthorization.isValid('TopUpBalance')")
     ResponseEntity<?> topUp(@PathVariable("gsmNumber") Long gsmNumber, @RequestBody TopUpAmountDto topUpAmount){
         return service.topUp(gsmNumber, topUpAmount);
     }
