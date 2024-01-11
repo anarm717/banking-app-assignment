@@ -49,6 +49,8 @@ Technology Stack:
 
 • Spring Data JPA.
 
+• Maven - Dependency Management
+
 • Swagger for API documentation.
 
 • JWT for authentication services.
@@ -60,3 +62,25 @@ Technology Stack:
 • Docker
 
 • To create API documentation in JavaDoc you can run this command for each service : mvn javadoc:javadoc
+
+
+URLS:
+
+
+Auth API : http://localhost:8081/swagger-ui/index.html
+
+Customer API : http://localhost:8082/swagger-ui/index.html
+
+Payment API : http://localhost:8083/swagger-ui/index.html
+
+
+Installation:
+
+- You need to install postgreSQL server or you can run in docker 
+- Simple command for build postgreSQL in docker : docker run –name pgsql-dev -e POSTGRES_PASSWORD=Welcome4$ -p 5432:5432 Postgres
+
+To run services in docker : 
+- Build docker image for each service : 
+    - mvn clean install
+    - docker build -t {service_name} .
+    - docker container run --name {service_name} -it -d -p {port}:{port} {service_name}
