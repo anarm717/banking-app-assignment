@@ -84,3 +84,21 @@ To run services in docker :
     - mvn clean install
     - docker build -t {service_name} .
     - docker container run --name {service_name} -it -d -p {port}:{port} {service_name}
+
+
+Here is main methods for operations:
+
+- Get auth JWT token first need to login(created test user name : admin, password : Admin@123): http://localhost:8081/swagger-ui/index.html#/auth-controller/login 
+
+- Create customer : http://localhost:8082/swagger-ui/index.html#/Customer/add
+
+- Top up balance by gsmNumber : http://localhost:8083/swagger-ui/index.html#/Payment/topUp
+
+- Purchase by gsmNumber : http://localhost:8083/swagger-ui/index.html#/Payment/purchase
+
+- Refund by purchase id: http://localhost:8083/swagger-ui/index.html#/Payment/refund
+
+- View transaction by id: http://localhost:8083/swagger-ui/index.html#/Payment/getByUUId
+
+- View transactions by gsmNumber: http://localhost:8083/swagger-ui/index.html#/Payment/getByGsmNumber
+
