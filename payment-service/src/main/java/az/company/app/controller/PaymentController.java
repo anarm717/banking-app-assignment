@@ -18,7 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/payment")
+@RequestMapping("/api/v1/payment")
 @Tag(name = "Payment", description = "the Payment api")
 @SecurityRequirement(name = "bearerAuth")
 public class PaymentController {

@@ -21,7 +21,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/customer")
+@RequestMapping("/api/v1/customer")
 @Tag(name = "Customer", description = "the Customer api")
 @SecurityRequirement(name = "bearerAuth")
 public class CustomerController {

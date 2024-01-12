@@ -82,7 +82,7 @@ class PaymentControllerTest extends BaseControllerTest {
         headers.setBearerAuth(token);
         headers.setContentType(MediaType.APPLICATION_JSON);
         // then
-        mockMvc.perform(MockMvcRequestBuilders.get("/payment/transaction/test-transaction-id").headers(headers))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/payment/transaction/test-transaction-id").headers(headers))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data.amount").value(BigDecimal.valueOf(100)))
@@ -112,7 +112,7 @@ class PaymentControllerTest extends BaseControllerTest {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         // then
-        mockMvc.perform(MockMvcRequestBuilders.get("/payment/transactions/505555555").headers(headers))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/payment/transactions/505555555").headers(headers))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].amount").value(BigDecimal.valueOf(100)))
@@ -151,7 +151,7 @@ class PaymentControllerTest extends BaseControllerTest {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         // then
-        mockMvc.perform(MockMvcRequestBuilders.post("/payment/top-up/505555555").headers(headers)
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/payment/top-up/505555555").headers(headers)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk());
@@ -187,7 +187,7 @@ class PaymentControllerTest extends BaseControllerTest {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         // then
-        mockMvc.perform(MockMvcRequestBuilders.post("/payment/purchase/505555555").headers(headers)
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/payment/purchase/505555555").headers(headers)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk());
@@ -219,7 +219,7 @@ class PaymentControllerTest extends BaseControllerTest {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         // then
-        mockMvc.perform(MockMvcRequestBuilders.post("/payment/purchase/505555555").headers(headers)
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/payment/purchase/505555555").headers(headers)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(refundAmountDto)))
                 .andExpect(status().isOk());

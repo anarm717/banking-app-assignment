@@ -51,7 +51,7 @@ public class CheckDelete {
                 }
             }
         } catch (Exception e){
-            throw new ApplicationException(ErrorsFinal.STAFF_UNIT_GET_ATTRIBUTES, Map.of("message", "ştatt vahidləri attributlarının işlənməsi zamanı xəta yarandı"));
+            throw new ApplicationException(ErrorsFinal.BAD_REQUEST, Map.of("message", "attributlarının işlənməsi zamanı xəta yarandı"));
         }
 
         return map.get(oneSidedEntityClass.getName());
