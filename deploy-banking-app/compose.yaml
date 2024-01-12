@@ -3,6 +3,7 @@ services:
   common_db:
     image: postgres
     restart: always
+    container_name: postgresdb
     environment:
       - POSTGRES_DB=banking_db
       - POSTGRES_USER=postgres
