@@ -8,7 +8,6 @@ import az.company.app.model.AmountDto;
 import az.company.app.model.ApiResponse;
 import az.company.app.model.CustomerBaseDto;
 import lombok.RequiredArgsConstructor;
-import java.util.List;
 import org.springframework.http.HttpMethod;
 import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Value;
