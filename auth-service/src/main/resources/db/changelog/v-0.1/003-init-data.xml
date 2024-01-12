@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+    <changeSet author="app" id="35">
+        <sql>
+            INSERT INTO "security".roles (id,created_at,created_by,role_desc,role_name,status) VALUES
+                (1,NULL,NULL,'Role for add Customer','CustomerAdd','1'),
+                (2,NULL,NULL,'Role for view Customers','CustomerView','1'),
+                (3,NULL,NULL,'Role for edit Customer','CustomerEdit','1'),
+                (4,NULL,NULL,'Role for delete Customer','CustomerDelete','1'),
+                (5,NULL,NULL,'Role for get Customer List','CustomerGetAll','1'),
+                (6,NULL,NULL,'Role for Top up balance','TopUpBalance','1'),
+                (7,NULL,NULL,'Role for purchase','PurchaseRole','1'),
+                (8,NULL,NULL,'Role for refund','RefundRole','1');
+            INSERT INTO "security".users (id,created_at,created_by,father_name,first_name,"password",status,last_name,username,address,email,mobile,note,mobile_phone,employee_id) VALUES
+	         (1,'2023-11-21 20:51:22.064',1,'Test','Test','$2a$10$Q6duGf/qq/vJWmmXeWJBKOug05LRMbWXbmBKgUCJMY.daVv8DTYEK','1','Test','admin',NULL,'admin@gmail.com','0558006789','Admin user',NULL,1);
+            INSERT INTO "security".user_role (created_at,created_by,status,role_id,user_id) VALUES
+                (NULL,NULL,'1',1,1),
+                (NULL,NULL,'1',2,1),
+                (NULL,NULL,'1',3,1),
+                (NULL,NULL,'1',4,1),
+                (NULL,NULL,'1',5,1),
+                (NULL,NULL,'1',6,1),
+                (NULL,NULL,'1',7,1),
+                (NULL,NULL,'1',8,1);
+        </sql>
+    </changeSet>
+</databaseChangeLog>

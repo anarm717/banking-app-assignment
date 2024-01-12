@@ -133,10 +133,7 @@
 					<url>jdbc:postgresql://localhost:5432/epoliasdb</url>
 					<username>imporcl</username>
 					<password>APF 012o21imP0rcl</password>
-					<defaultSchemaName>security</defaultSchemaName> <!--
-					<includeSchema>true</includeSchema>--> <!--                    <
-					schemas>security</schemas>--> <!--
-					<outputChangeLogFile>src/main/resources/liquibase-outputChangeLog.sql</outputChangeLogFile>-->
+					<defaultSchemaName>security</defaultSchemaName> 
 					<outputChangeLogFile>src/main/resources/db/changelog/v-0.1/001-init-db.xml</outputChangeLogFile>
 					<changeLogFile>db/changelog/v-0.1/001-init-db.xml</changeLogFile> </configuration>
 			</plugin>
@@ -144,7 +141,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<!--				<version>3.5.1</version>-->
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
@@ -172,29 +168,6 @@
 					</compilerArgs>
 				</configuration>
 			</plugin>
-
-<!--			            <plugin>-->
-<!--			                <groupId>org.apache.maven.plugins</groupId>-->
-<!--			                <artifactId>maven-javadoc-plugin</artifactId>-->
-<!--			                <executions>-->
-<!--			                    <execution>-->
-<!--			                        <id>attach-javadoc</id>-->
-<!--			                        <phase>prepare-package</phase>-->
-<!--			                        <goals>-->
-<!--			                            <goal>javadoc</goal>-->
-<!--			                        </goals>-->
-<!--			                        <configuration>-->
-<!--			                            <reportOutputDirectory>${project.build.directory}/classes/</reportOutputDirectory>-->
-<!--			                            <show>private</show>-->
-<!--			                        </configuration>-->
-<!--			                    </execution>-->
-<!--			                </executions>-->
-<!--			                <configuration>-->
-<!--			                    <subpackages>az.apf.auth.dto:az.apf.auth.controller:az.apf.auth.service:az.apf.auth.filter:az.apf.auth.security</subpackages>-->
-<!--			                    <quiet>true</quiet>-->
-<!--			                </configuration>-->
-<!--			            </plugin>-->
-
 		</plugins>
 	</build>
 
