@@ -77,13 +77,9 @@ Payment API : http://localhost:8083/swagger-ui/index.html
 Installation:
 
 - You need to install postgreSQL server or you can run in docker 
-- Simple command for build postgreSQL in docker : docker run –name pgsql-dev -e POSTGRES_PASSWORD=Welcome4$ -p 5432:5432 Postgres
 
 To run services in docker : 
-- Build docker image for each service : 
-    - mvn clean install
-    - docker build -t {service_name} .
-    - docker container run --name {service_name} -it -d -p {port}:{port} {service_name}
+- Run deploy.sh in deploy-banking-app folder. It will create porstres database and containers for each service.
 
 
 Here is main methods for operations:
@@ -92,13 +88,47 @@ Here is main methods for operations:
 
 - Create customer : http://localhost:8082/swagger-ui/index.html#/Customer/add
 
+    input parameters : {
+                        "name": "NameParam",
+                        "surname": "SurnameParam",
+                        "birthDate": "01.01.1988",
+                        "gsmNumber": 505005050,
+                        "balance": 100
+                        }
+    This method will create customer and gsm number in customer database with zero balance and calls topUp method with initial amount on payment service. After top up is successfully finished topUp method will call add-balance method from Customer service and will  add initial amount to customer balance.
+
 - Top up balance by gsmNumber : http://localhost:8083/swagger-ui/index.html#/Payment/topUp
+
+    input parameters: { "topUpAmount":50 } 
+    After create top up transaction in payment database, will call add-balance method from Customer service and will add top up amount to customer balance.
 
 - Purchase by gsmNumber : http://localhost:8083/swagger-ui/index.html#/Payment/purchase
 
+    input parameters: { "purchaseAmount":50 } 
+    After create purchase transaction in payment database, will call subtract-balance method from Customer service and will subtract purchase amount to customer balance.
+
 - Refund by purchase id: http://localhost:8083/swagger-ui/index.html#/Payment/refund
+
+    input parameters: { "refundAmount":50 } 
+    After create refund transaction and refund details (purchase transaction id and refund transaction) in payment database, will call add-balance method from Customer service and will add refund amount to customer balance.
 
 - View transaction by id: http://localhost:8083/swagger-ui/index.html#/Payment/getByUUId
 
 - View transactions by gsmNumber: http://localhost:8083/swagger-ui/index.html#/Payment/getByGsmNumber
 
+    Pagination added for this method
+
+
+Checks and validations
+
+- Check gsm number exists before topUp, purchase balance
+- Check initial balance is minimum 100
+- Rollback if paymentService error when add customer
+- Rollback if customerService error when top-up balance
+- Rollback if customerService error when purchase balance
+- Rollback if customerService error when refund transaction
+- Check transaction id exist and type is purchase when refund
+- Check refund amount lower than purchase amount
+- Refund amount should be lower than purchase amount subtract sum of old refund amounts 
+- Unique index added for active gsm numbers
+- Unit tests created for payment service
