@@ -10,6 +10,7 @@ import az.company.app.mapper.CustomerMapper;
 import az.company.app.mapper.CustomerNumberMapper;
 import az.company.app.model.AmountBaseDto;
 import az.company.app.model.CustomerBaseDto;
+import az.company.app.model.CustomerUpdateDto;
 import az.company.app.repository.CustomerNumberRepository;
 import az.company.app.repository.CustomerRepository;
 import az.company.app.response.MessageResponse;
@@ -194,12 +195,12 @@ public class CustomerServiceImpl implements CustomerService {
      * @throws ApplicationException if the customer with the given ID is not found.
      */
     @Override
-    public ResponseEntity<?> updateCustomer(CustomerBaseDto customerBaseDto, Long id) {
+    public ResponseEntity<?> updateCustomer(CustomerUpdateDto customerBaseDto, Long id) {
         Customer customer = customerRepository.findById(id)
                 .orElseThrow(() -> new ApplicationException(ErrorsFinal.DATA_NOT_FOUND, Map.ofEntries(Map.entry("id", id), Map.entry("name", "Customer"))));
         customerMapper.updateEntity(customer, customerBaseDto);
         customerRepository.save(customer);
-        CustomerBaseDto dto = customerMapper.entityToDto(customer);
+        CustomerUpdateDto dto = customerMapper.entityToUpdateDto(customer);
         return MessageResponse.response(SuccessMessage.SUCCESS_UPDATE, dto, null, HttpStatus.OK);
     }
 

@@ -4,6 +4,7 @@ import az.company.app.errors.SuccessMessage;
 import az.company.app.logging.annotation.LogExecutionTime;
 import az.company.app.model.AmountBaseDto;
 import az.company.app.model.CustomerBaseDto;
+import az.company.app.model.CustomerUpdateDto;
 import az.company.app.response.MessageResponse;
 import az.company.app.service.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -67,7 +68,7 @@ public class CustomerController {
     @Operation(summary = "update customer", description = "there you can update customer", tags = {"Customer"})
     @PutMapping("/{id}")
     @PreAuthorize("@customAuthorization.isValid('CustomerEdit')")
-    ResponseEntity<?> updateCustomer (@RequestBody CustomerBaseDto customerBaseDto, @PathVariable Long id){
+    ResponseEntity<?> updateCustomer (@RequestBody CustomerUpdateDto customerBaseDto, @PathVariable Long id){
         return service.updateCustomer(customerBaseDto, id);
     }
 

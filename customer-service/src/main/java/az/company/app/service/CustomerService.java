@@ -2,6 +2,7 @@ package az.company.app.service;
 
 import az.company.app.model.AmountBaseDto;
 import az.company.app.model.CustomerBaseDto;
+import az.company.app.model.CustomerUpdateDto;
 
 import org.springframework.http.ResponseEntity;
 
@@ -55,7 +56,7 @@ public interface CustomerService {
      @param id The ID of the entity to update.
      @return A ResponseEntity containing the updated Customer entity, or an error response if the entity is not found or the update fails.
      */
-    ResponseEntity<?> updateCustomer(CustomerBaseDto customerBaseDto, Long id);
+    ResponseEntity<?> updateCustomer(CustomerUpdateDto customerBaseDto, Long id);
 
     /**
      Delete a Customer entity by ID.
