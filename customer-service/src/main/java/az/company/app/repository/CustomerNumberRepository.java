@@ -22,6 +22,9 @@ public interface CustomerNumberRepository extends JpaRepository<CustomerNumber, 
     @Query("select  count(p) from CustomerNumber p where p.status = :character")
     List<Integer> getAllCountByStatus(Character character);
 
+    @Query("select  p from CustomerNumber p where p.status = '1' and p.customer.id=:customerId")
+    List<CustomerNumber> getAllByCustomerId(Long customerId);
+
     @Query("select  p from CustomerNumber p left join fetch Customer where p.gsmNumber = :gsmNumber")
     List<CustomerNumber> getByNumber(Long gsmNumber);
 

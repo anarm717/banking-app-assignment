@@ -108,6 +108,10 @@ public class CustomerServiceImpl implements CustomerService {
      */
     @Override
     public ResponseEntity<?> addCustomer(CustomerBaseDto customerBaseDto) {
+        Integer length = String.valueOf(customerBaseDto.getGsmNumber()).length();
+        if (!length.equals(9)) {
+            throw new ApplicationException(ErrorsFinal.WRONG_GSM_NUMBER_LENGTH);
+        }
         BigDecimal minBalanceLimit = new BigDecimal(100);
         if (customerBaseDto.getBalance().compareTo(minBalanceLimit)<0) {
             throw new ApplicationException(ErrorsFinal.WRONG_INITIAL_BALANCE);
@@ -210,7 +214,10 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = customerRepository.findById(id)
                 .orElseThrow(() -> new ApplicationException(ErrorsFinal.DATA_NOT_FOUND,
                         Map.ofEntries(Map.entry("id", id), Map.entry("name", "Vəzifəyə"))));
-
+        List<CustomerNumber> customerNumbers= customerNumberRepository.getAllByCustomerId(id);
+        for (CustomerNumber customerNumber : customerNumbers) {
+            customerNumberRepository.delete(customerNumber);
+        }
         customerRepository.delete(customer);
         CustomerBaseDto customerBaseDto = customerMapper.entityToDto(customer);
         return MessageResponse.response(SuccessMessage.SUCCESS_DELETE, customerBaseDto, null, HttpStatus.OK);

@@ -132,3 +132,5 @@ Checks and validations
 - Refund amount should be lower than purchase amount subtract sum of old refund amounts 
 - Unique index added for active gsm numbers
 - Unit tests created for payment service
+- Delete customer numbers, before delete customer
+- Check gsm number length (should be 9)
