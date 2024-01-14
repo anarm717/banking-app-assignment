@@ -1,17 +1,17 @@
 package az.company.app.entity;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import jakarta.persistence.*;
-
+import java.util.List;
 
 @Getter
 @Setter
@@ -30,6 +30,15 @@ public class Customer extends BaseEntity<Long> {
 
     @Column
     private LocalDate birthDate;
+
+    @OneToMany(
+            mappedBy = "customer",
+            cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE },
+            fetch = FetchType.LAZY,
+            orphanRemoval = true
+    )
+    @Where(clause = " status = '1' ")
+    private List<CustomerNumber> customerNumbers;
 
     @Override
     public int hashCode() {

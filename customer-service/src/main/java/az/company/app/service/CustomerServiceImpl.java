@@ -10,6 +10,7 @@ import az.company.app.mapper.CustomerMapper;
 import az.company.app.mapper.CustomerNumberMapper;
 import az.company.app.model.AmountBaseDto;
 import az.company.app.model.CustomerBaseDto;
+import az.company.app.model.CustomerCriterieDto;
 import az.company.app.model.CustomerUpdateDto;
 import az.company.app.repository.CustomerNumberRepository;
 import az.company.app.repository.CustomerRepository;
@@ -62,7 +63,7 @@ public class CustomerServiceImpl implements CustomerService {
     public ResponseEntity<?> getById(Long id) {
         Customer customer = customerRepository.findById(id).orElseThrow(() ->
                 new ApplicationException(ErrorsFinal.DATA_NOT_FOUND, Map.ofEntries(Map.entry("id", id), Map.entry("name", "Customer"))));
-        CustomerBaseDto dto = customerMapper.entityToDto(customer);
+        CustomerCriterieDto dto = customerMapper.entityCriterieToDto(customer);
         return MessageResponse.response(SuccessMessage.SUCCESS_GET, dto, null, HttpStatus.OK);
     }
 
@@ -93,9 +94,9 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public ResponseEntity<?> getActives(int page, int size) {
         Pageable paging = PageRequest.of(page, size);
-        List<CustomerNumber> find = customerNumberRepository.findAllByStatus('1',paging);
-        List<CustomerBaseDto> dtos = customerNumberMapper.entityToDtos(find);
-        List<Integer> recordCount = customerNumberRepository.getAllCountByStatus('1');
+        List<Customer> find = customerRepository.findAllByStatus('1',paging);
+        List<CustomerCriterieDto> dtos = customerMapper.entityToCriterieDtos(find);
+        List<Integer> recordCount = customerRepository.getAllCountByStatus('1');
         Map<String, Object> data = new HashMap<>();
         data.put("customers",dtos);
         data.put("recordCount",recordCount.get(0));
