@@ -1,6 +1,5 @@
-package az.company.app.controller;
+package az.company.app.unit.controller;
 
-import az.company.app.base.BaseControllerTest;
 import az.company.app.config.CustomAuthorization;
 import az.company.app.errors.SuccessMessage;
 import az.company.app.mapper.TransactionMapper;
@@ -13,15 +12,18 @@ import az.company.app.response.MessageResponse;
 import az.company.app.service.AuthService;
 import az.company.app.service.CustomerApiService;
 import az.company.app.service.PaymentService;
+import az.company.app.unit.base.BaseControllerTest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -34,7 +36,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import java.util.List;
 
-
+@TestPropertySource(locations = "classpath:test.properties")
 class PaymentControllerTest extends BaseControllerTest {
 
     @Autowired
@@ -52,7 +54,8 @@ class PaymentControllerTest extends BaseControllerTest {
     @MockBean
     private CustomAuthorization customAuthorization;
 
-    private String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTcwNTEwNDgxMiwidXNlcklkIjoxLCJlbXBsb3llZUlkIjoxLCJyb2xlcyI6W3sicm9sZU5hbWUiOiJDdXN0b21lckFkZCIsImNyZWF0ZWRCeSI6bnVsbCwicm9sZURlc2MiOiJSb2xlIGZvciBhZGQgQ3VzdG9tZXIiLCJwZXJtaXNzaW9ucyI6W119LHsicm9sZU5hbWUiOiJDdXN0b21lclZpZXciLCJjcmVhdGVkQnkiOm51bGwsInJvbGVEZXNjIjoiUm9sZSBmb3IgdmlldyBDdXN0b21lcnMiLCJwZXJtaXNzaW9ucyI6W119LHsicm9sZU5hbWUiOiJDdXN0b21lckVkaXQiLCJjcmVhdGVkQnkiOm51bGwsInJvbGVEZXNjIjoiUm9sZSBmb3IgZWRpdCBDdXN0b21lciIsInBlcm1pc3Npb25zIjpbXX0seyJyb2xlTmFtZSI6IkN1c3RvbWVyRGVsZXRlIiwiY3JlYXRlZEJ5IjpudWxsLCJyb2xlRGVzYyI6IlJvbGUgZm9yIGRlbGV0ZSBDdXN0b21lciIsInBlcm1pc3Npb25zIjpbXX0seyJyb2xlTmFtZSI6IkN1c3RvbWVyR2V0QWxsIiwiY3JlYXRlZEJ5IjpudWxsLCJyb2xlRGVzYyI6IlJvbGUgZm9yIGdldCBDdXN0b21lciBMaXN0IiwicGVybWlzc2lvbnMiOltdfSx7InJvbGVOYW1lIjoiVG9wVXBCYWxhbmNlIiwiY3JlYXRlZEJ5IjpudWxsLCJyb2xlRGVzYyI6IlJvbGUgZm9yIFRvcCB1cCBiYWxhbmNlIiwicGVybWlzc2lvbnMiOltdfSx7InJvbGVOYW1lIjoiUHVyY2hhc2VSb2xlIiwiY3JlYXRlZEJ5IjpudWxsLCJyb2xlRGVzYyI6IlJvbGUgZm9yIHB1cmNoYXNlIiwicGVybWlzc2lvbnMiOltdfSx7InJvbGVOYW1lIjoiUmVmdW5kUm9sZSIsImNyZWF0ZWRCeSI6bnVsbCwicm9sZURlc2MiOiJSb2xlIGZvciByZWZ1bmQiLCJwZXJtaXNzaW9ucyI6W119XX0.UU-gdG-4P7N0qVMvpMnYl6TYga72OfU8knC1_Lz22jt_vDSVPMMflMJD3-OtK11Hl8C8VPVfXZWX7YdDktAguQ";
+    @Value("${testing.mock.token}")
+    private String token;
 
     HttpHeaders headers = new HttpHeaders();
 
@@ -71,12 +74,9 @@ class PaymentControllerTest extends BaseControllerTest {
                 .build();
         
         String transactionUUID = "test-transaction-id";
-        // ResponseEntity<?> response = new ResponseEntity<>(HttpStatus.ACCEPTED);
         ResponseEntity response = MessageResponse.response(SuccessMessage.SUCCESS_GET, transactionBaseDto, null, HttpStatus.OK);
-        // ResponseEntity<?> response = new ResponseEntity<>(new ResponseModelDTO<>(SuccessMessage.SUCCESS_GET, transactionBaseDto, null), HttpStatus.OK);
         // when
         when(paymentService.getByUUId(transactionUUID)).thenReturn(response);
-        // when(accountMapper.toAccountResponse(accountDTO)).thenReturn(createdAccountResponse);
         AuthService authService = mock(AuthService.class);
         when(authService.validateToken(token)).thenReturn(true);
         headers.setBearerAuth(token);

@@ -1,4 +1,4 @@
-package az.company.app.base;
+package az.company.app.unit.base;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;

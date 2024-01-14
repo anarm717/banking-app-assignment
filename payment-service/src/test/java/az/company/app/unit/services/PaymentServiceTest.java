@@ -1,4 +1,4 @@
-package az.company.app.services;
+package az.company.app.unit.services;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -6,7 +6,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
-import az.company.app.base.BaseServiceTest;
 import az.company.app.entity.Transaction;
 import az.company.app.entity.TransactionType;
 import az.company.app.mapper.TransactionMapper;
@@ -15,6 +14,7 @@ import az.company.app.repository.RefundDetailsRepository;
 import az.company.app.repository.TransactionRepository;
 import az.company.app.response.ResponseModelDTO;
 import az.company.app.service.PaymentServiceImpl;
+import az.company.app.unit.base.BaseServiceTest;
 
 import java.math.BigDecimal;
 import java.util.*;
