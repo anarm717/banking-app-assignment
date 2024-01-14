@@ -117,6 +117,9 @@ public class PaymentServiceImpl implements PaymentService {
             throw new ApplicationException(ErrorsFinal.GSM_NUMBER_NOT_FOUND,
             Map.ofEntries(Map.entry("gsmNumber",gsmNumber)));
         }
+        if (topUpAmountDto.getTopUpAmount().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new ApplicationException(ErrorsFinal.WRONG_AMOUNT);
+        }
         Transaction transaction = new Transaction();
         transaction.setGsmNumber(gsmNumber);
         transaction.setAmount(topUpAmountDto.getTopUpAmount());
@@ -151,6 +154,9 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public ResponseEntity<?> purchase(Long gsmNumber, PurchaseAmountDto purchaseAmountDto) {
         //to-do check gsmNumber exists
+        if (purchaseAmountDto.getPurchaseAmount().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new ApplicationException(ErrorsFinal.WRONG_AMOUNT);
+        }
         Transaction transaction = new Transaction();
         transaction.setGsmNumber(gsmNumber);
         transaction.setAmount(purchaseAmountDto.getPurchaseAmount());
@@ -184,6 +190,9 @@ public class PaymentServiceImpl implements PaymentService {
      */
     @Override
     public ResponseEntity<?> refund(String transactionId, RefundAmountDto refundAmountDto) {
+        if (refundAmountDto.getRefundAmount().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new ApplicationException(ErrorsFinal.WRONG_AMOUNT);
+        }
         List<Transaction> transactions = transactionRepository.getByTransactionId(transactionId,TransactionTypeEnum.PURCHASE.getId());
         if (transactions.isEmpty()){
             throw new ApplicationException(ErrorsFinal.TRANSACTION_NOT_FOUND,

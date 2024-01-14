@@ -7,11 +7,14 @@ import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 
+import jakarta.validation.constraints.Positive;
+
 @Getter
 @Setter
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 public class AmountDto {
+    @Positive
     private BigDecimal amount;
 }

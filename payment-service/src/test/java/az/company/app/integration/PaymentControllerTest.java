@@ -27,6 +27,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestPropertySource;
@@ -91,6 +92,23 @@ class PaymentControllerTest extends BaseControllerTest {
    }
    @Test
    @Order(3)
+   public void givenWrongTopUpAmountRequest_whenTopUpAmount_ReturnTransaction() throws Exception {
+        //Given
+        TopUpAmountDto request = TopUpAmountDto.builder()
+                .topUpAmount(BigDecimal.valueOf(-1))
+                .build();
+        String gsmNumber = "505005050";
+        headers.setBearerAuth(token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<TopUpAmountDto> entity = new HttpEntity<>(request, headers);
+        String transactionUrl = URL.concat("top-up/").concat(gsmNumber);
+        ResponseEntity<ApiResponse<TransactionBaseDto>> responseEntity = restTemplate.exchange(
+                transactionUrl, HttpMethod.POST, entity, new ParameterizedTypeReference<>() {
+                });
+        assertEquals(responseEntity.getStatusCode(), HttpStatus.BAD_REQUEST);
+   }
+   @Test
+   @Order(4)
     public void givenTransactionIdRequest_whenGetByUUID_ReturnTransaction() throws Exception {
         headers.setBearerAuth(token);
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -105,7 +123,7 @@ class PaymentControllerTest extends BaseControllerTest {
 	assertNotNull(transaction.getAmount());
    }
    @Test
-   @Order(4)
+   @Order(5)
    public void givenPurchaseAmountRequest_whenPurchase_ReturnTransaction() throws Exception {
         //Given
         PurchaseAmountDto request = PurchaseAmountDto.builder()
@@ -127,7 +145,7 @@ class PaymentControllerTest extends BaseControllerTest {
         purchaseTransactionId = transaction.getTransactionUUId();
    }
    @Test
-   @Order(5)
+   @Order(6)
    public void givenRefundAmountRequest_whenRefund_ReturnTransaction() throws Exception {
         //Given
         RefundAmountDto refundAmountDto = RefundAmountDto.builder()
@@ -145,5 +163,56 @@ class PaymentControllerTest extends BaseControllerTest {
         TransactionBaseDto transaction = result.getData();
         assertNotNull(transaction);
 	assertEquals(transaction.getAmount(),BigDecimal.valueOf(30));
+   }
+   @Test
+   @Order(7)
+   public void givenRefundAmountHigherThanPurchaseAmountRequest_whenRefund_ReturnTransaction() throws Exception {
+        //Given
+        RefundAmountDto refundAmountDto = RefundAmountDto.builder()
+                .refundAmount(BigDecimal.valueOf(300))
+                .build();
+        headers.setBearerAuth(token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<RefundAmountDto> entity = new HttpEntity<>(refundAmountDto, headers);
+        String transactionUrl = URL.concat("refund/").concat(purchaseTransactionId);
+        ResponseEntity<ApiResponse<TransactionBaseDto>> responseEntity = restTemplate.exchange(
+                transactionUrl, HttpMethod.POST, entity, new ParameterizedTypeReference<>() {
+                });
+        assertEquals(responseEntity.getStatusCode(), HttpStatus.BAD_REQUEST);
+   }
+   @Test
+   @Order(8)
+   public void givenTopUpAmountAndWrongGsmNumberRequest_whenTopUpAmount_ReturnTransaction() throws Exception {
+        //Given
+        TopUpAmountDto request = TopUpAmountDto.builder()
+                .topUpAmount(BigDecimal.valueOf(100))
+                .build();
+        String gsmNumber = "501234567";
+        headers.setBearerAuth(token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<TopUpAmountDto> entity = new HttpEntity<>(request, headers);
+        String transactionUrl = URL.concat("top-up/").concat(gsmNumber);
+        ResponseEntity<ApiResponse<TransactionBaseDto>> responseEntity = restTemplate.exchange(
+                transactionUrl, HttpMethod.POST, entity, new ParameterizedTypeReference<>() {
+                });
+        assertEquals(responseEntity.getStatusCode(), HttpStatus.NOT_FOUND);
+   }
+   @Test
+   @Order(9)
+   public void givenNegativePurchaseAmountRequest_whenPurchase_ReturnTransaction() throws Exception {
+        //Given
+        PurchaseAmountDto request = PurchaseAmountDto.builder()
+                .purchaseAmount(BigDecimal.valueOf(-50))
+                .build();
+        String gsmNumber = "505005050";
+        headers.setBearerAuth(token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<PurchaseAmountDto> entity = new HttpEntity<>(request, headers);
+        String transactionUrl = URL.concat("purchase/").concat(gsmNumber);
+        ResponseEntity<ApiResponse<TransactionBaseDto>> responseEntity = restTemplate.exchange(
+                transactionUrl, HttpMethod.POST, entity, new ParameterizedTypeReference<>() {
+                });
+
+        assertEquals(responseEntity.getStatusCode(), HttpStatus.BAD_REQUEST);
    }
 }

@@ -1,6 +1,7 @@
 package az.company.app.model;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,5 +18,6 @@ import java.math.BigDecimal;
 public class PurchaseAmountDto {
     
     @NotBlank
+    @Positive
     private BigDecimal purchaseAmount;
 }

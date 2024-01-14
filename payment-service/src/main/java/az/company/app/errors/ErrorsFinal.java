@@ -20,7 +20,7 @@ public enum ErrorsFinal implements ErrorResponse {
     
     GSM_NUMBER_NOT_FOUND( "GSM_NUMBER_NOT_FOUND", HttpStatus.NOT_FOUND, "GSM Number not found : '{gsmNumber}'"),
     CUSTOMER_SERVICE_ERROR( "CUSTOMER_SERVICE_ERROR", HttpStatus.CONFLICT, "Customer Service Error"),
-
+    WRONG_AMOUNT( "WRONG_AMOUNT", HttpStatus.BAD_REQUEST, "Wrong amount"),
     //for testing exceptions
     EXCEPTION_IN_TESTING("EXCEPTION_IN_TESTING", HttpStatus.INTERNAL_SERVER_ERROR, "testing zamanı xəta yarandı"),
 
