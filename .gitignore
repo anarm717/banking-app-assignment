@@ -24,5 +24,6 @@
 hs_err_pid*
 replay_pid*
 */target
+*/.vscode
 
 customer-service/src/main/resources/application.properties
