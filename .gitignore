@@ -27,3 +27,4 @@ replay_pid*
 */.vscode
 
 customer-service/src/main/resources/application.properties
+.vscode/settings.json
