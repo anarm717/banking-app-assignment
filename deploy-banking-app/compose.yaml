@@ -1,6 +1,6 @@
 version: '2'
 services:
-  common_db:
+  common-db:
     image: postgres
     restart: always
     container_name: postgresdb
@@ -12,19 +12,19 @@ services:
       - ./init_db:/docker-entrypoint-initdb.d/
     ports:
       - 5433:5432
-  auth_service:
+  auth-service:
     build:
       dockerfile: ../auth-service/Dockerfile
       context: ../auth-service
     ports:
       - "8081:8081"
-  customer_service:
+  customer-service:
     build:
       dockerfile: ../customer-service/Dockerfile
       context: ../customer-service
     ports:
       - "8082:8082"
-  payment_service:
+  payment-service:
     build:
       dockerfile: ../payment-service/Dockerfile
       context: ../payment-service

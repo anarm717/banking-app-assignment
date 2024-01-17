@@ -77,8 +77,8 @@
         <sql>
             INSERT INTO payment.transaction_types (id,created_at,created_by,end_date,status,name) VALUES
             (1,'2024-01-11 02:45:27.168',NULL,NULL,'1','Top-up'),
-            (2,'2024-01-11 02:45:27.170',NULL,NULL,'1','Refund'),
-            (3,'2024-01-11 02:45:27.171',NULL,NULL,'1','Purchase');
+            (2,'2024-01-11 02:45:27.171',NULL,NULL,'1','Purchase'),
+            (3,'2024-01-11 02:45:27.170',NULL,NULL,'1','Refund');
         </sql>
     </changeSet>
 </databaseChangeLog>
