@@ -7,10 +7,6 @@ import az.company.auth.entity.UserRole;
 
 import java.util.List;
 
-/**
- * @author fuad
- */
-
 @Mapper(componentModel = "spring")
 public abstract class  UserRoleMapper {
 

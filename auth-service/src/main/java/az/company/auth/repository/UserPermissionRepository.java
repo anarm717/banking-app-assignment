@@ -12,9 +12,7 @@ import az.company.auth.entity.UserPermission;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * @author fuad
- */
+
 public interface UserPermissionRepository extends JpaRepository<UserPermission, Long> {
 
     List<UserPermission> findByUserId(Long id);

@@ -1,9 +1,7 @@
 package az.company.auth.dto.UserDto;
 
 
-/**
- * @author fuad
- */
+
 
 public interface UserPermissionProjection {
 

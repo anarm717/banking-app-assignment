@@ -9,11 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import az.company.auth.service.app.AppService;
 
-/**
- The RoleController class is a Spring Boot REST API controller that handles HTTP requests and responses for managing application.
- The class provides Get operations for applications.
- @author fuad
- */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/App")

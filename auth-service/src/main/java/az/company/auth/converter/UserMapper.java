@@ -15,9 +15,6 @@ import az.company.auth.entity.UserRole;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * @author fuad
- */
 @Mapper(componentModel = "spring")
 public abstract class UserMapper {
 

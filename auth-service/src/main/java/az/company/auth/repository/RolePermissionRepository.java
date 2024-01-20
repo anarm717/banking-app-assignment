@@ -10,9 +10,7 @@ import az.company.auth.entity.User;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * @author fuad
- */
+
 public interface RolePermissionRepository extends JpaRepository<RolePermission, Long> {
 
 

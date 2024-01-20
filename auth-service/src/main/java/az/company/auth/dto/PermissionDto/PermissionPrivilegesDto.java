@@ -6,9 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
-/**
- * @author fuad
- */
+
 @Getter
 @Setter
 @AllArgsConstructor

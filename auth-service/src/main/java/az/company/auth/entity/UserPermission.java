@@ -6,9 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
-/**
- * @author fuad
- */
+
 @Entity
 @Getter
 @Setter

@@ -9,9 +9,7 @@ import az.company.auth.repository.AppRepository;
 
 import java.util.List;
 
-/**
- * @author fuad
- */
+
 
 @Service
 @RequiredArgsConstructor

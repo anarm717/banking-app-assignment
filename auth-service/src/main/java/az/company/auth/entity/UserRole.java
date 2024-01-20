@@ -7,9 +7,7 @@ import org.hibernate.annotations.Where;
 
 import java.time.LocalDateTime;
 
-/**
- * @author fuad
- */
+
 @Entity
 @Getter
 @Setter

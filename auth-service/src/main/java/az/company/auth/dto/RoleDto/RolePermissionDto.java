@@ -5,9 +5,6 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author fuad
- */
 
 @Data
 public class RolePermissionDto {

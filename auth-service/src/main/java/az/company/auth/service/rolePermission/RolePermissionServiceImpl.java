@@ -8,9 +8,7 @@ import az.company.auth.repository.RolePermissionRepository;
 
 import java.util.List;
 
-/**
- * @author fuad
- */
+
 @Service
 @RequiredArgsConstructor
 public class RolePermissionServiceImpl implements RolePermissionService{

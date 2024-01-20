@@ -7,9 +7,6 @@ import az.company.auth.entity.RolePermission;
 
 import java.util.List;
 
-/**
- * @author fuad
- */
 @Mapper(componentModel = "spring")
 public abstract class RolePermissionMapper {
 
