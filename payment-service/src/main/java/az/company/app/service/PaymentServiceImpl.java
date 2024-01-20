@@ -203,7 +203,7 @@ public class PaymentServiceImpl implements PaymentService {
             Map.ofEntries(Map.entry("transactionId",transactionId)));
         }
         Transaction purchaseTransaction = transactions.get(0);
-        List<BigDecimal> sumPurchaseAmounts = transactionRepository.getSumAmountByTransactionId(transactionId,TransactionTypeEnum.REFUND.getId());
+        List<BigDecimal> sumPurchaseAmounts = refundDetailsRepository.getSumRefundAmountByTransactionId(transactionId);
         BigDecimal sumPurchaseAmount = sumPurchaseAmounts.get(0);
         if(sumPurchaseAmount==null) {
             sumPurchaseAmount = BigDecimal.ZERO;
